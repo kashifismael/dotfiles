@@ -17,6 +17,8 @@ vim.api.nvim_set_hl(0, 'CursorLineNr', { fg = "white"})
 vim.api.nvim_set_hl(0, 'LineNrAbove', { fg = "#b4cfb8"})
 vim.api.nvim_set_hl(0, 'LineNrBelow', { fg = "#b4cfb8"})
 
+vim.opt.cursorline = true
+
 vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
 vim.opt.shiftwidth = 2

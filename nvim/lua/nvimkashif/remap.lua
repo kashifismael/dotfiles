@@ -20,4 +20,5 @@ vim.keymap.set("n", "<leader>dv", ':DiffviewOpen<CR>')
 
 vim.keymap.set("n", "<leader>vs", ':vsplit<CR>')
 
+vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]])
 vim.keymap.set("n", "<leader>j", ':ToggleTerm<CR>')
