@@ -18,5 +18,12 @@ alias run-local-mongo="mongod --config /opt/homebrew/etc/mongod.conf"
 
 #git
 alias gco='git checkout'
-alias gst='git status'
+alias gst='git status --short --branch'
 alias glog='git log --oneline --decorate --graph'
+
+#k8s
+alias kgp='kubectl get pods'
+alias kgs='kubectl get services'
+alias kgd='kubectl get deployments'
+alias klf='kubectl logs -f'
+alias kpf="kubectl port-forward"
