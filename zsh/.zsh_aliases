@@ -1,0 +1,20 @@
+#vim
+alias nvconf="cd ~/.config/nvim && nvim init.lua"
+alias viconf="vi ~/.vimrc"
+alias nv="nvim"
+
+alias py="python3"
+
+# use ripgrep for fzf
+export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob '!{**/node_modules/*,**/.git/*,**/build/*,**/.gradle/*,**/.idea/*}'"
+alias rgrep="rg -i --glob '!{**/node_modules/*,**/.git/*}'"
+
+ff() {
+	cd `ls | fzf`
+}
+
+#mongo
+alias run-local-mongo="mongod --config /opt/homebrew/etc/mongod.conf"
+
+#git
+alias gco='git checkout'
