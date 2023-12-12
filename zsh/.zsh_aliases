@@ -1,3 +1,6 @@
+# general
+alias ..="cd .."
+
 #vim
 alias nvconf="cd ~/.config/nvim && nvim init.lua"
 alias viconf="vi ~/.vimrc"
@@ -11,6 +14,14 @@ alias rgrep="rg -i --glob '!{**/node_modules/*,**/.git/*}'"
 
 ff() {
 	cd `ls | fzf`
+}
+
+nvff() {
+	nv `fzf`
+}
+
+viff() {
+	vim `fzf`
 }
 
 #mongo
@@ -27,3 +38,6 @@ alias kgs='kubectl get services'
 alias kgd='kubectl get deployments'
 alias klf='kubectl logs -f'
 alias kpf="kubectl port-forward"
+alias keti='kubectl exec -t -i'
+alias kgctx='kubectl config get-contexts'
+alias kgj='kubectl get jobs'
