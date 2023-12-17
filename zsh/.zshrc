@@ -10,16 +10,16 @@ add-zsh-hook precmd vcs_info
 
 # Style the vcs_info message
 zstyle ':vcs_info:*' enable git
-zstyle ':vcs_info:git*' formats '(%b%u%c)'
+zstyle ':vcs_info:git*' formats '%F{48}(%b%u%c)%f'
 # Format when the repo is in an action (merge, rebase, etc)
-zstyle ':vcs_info:git*' actionformats '%F{14}⏱ %*%f'
+zstyle ':vcs_info:git*' actionformats '%F{48}(%b|%a💥)%f'
 zstyle ':vcs_info:git*' unstagedstr '⚡️'
 zstyle ':vcs_info:git*' stagedstr '❇️ ' 
 # This enables %u and %c (unstaged/staged changes) to work,
 # but can be slow on large repos
 zstyle ':vcs_info:*:*' check-for-changes true
 
-export PROMPT='%F{magenta}%~%f${vcs_info_msg_0_} $ '
+export PROMPT='%F{13}%~%f${vcs_info_msg_0_} $ '
 
 export CLICOLOR=1
 export LSCOLORS='GxFxCxDxBxegedabagaced'
