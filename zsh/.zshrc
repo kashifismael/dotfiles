@@ -14,7 +14,7 @@ zstyle ':vcs_info:git*' formats '%F{48}(%b%u%c)%f'
 # Format when the repo is in an action (merge, rebase, etc)
 zstyle ':vcs_info:git*' actionformats '%F{48}(%b|%a💥)%f'
 zstyle ':vcs_info:git*' unstagedstr '⚡️'
-zstyle ':vcs_info:git*' stagedstr '❇️ ' 
+zstyle ':vcs_info:git*' stagedstr '❇️' 
 # This enables %u and %c (unstaged/staged changes) to work,
 # but can be slow on large repos
 zstyle ':vcs_info:*:*' check-for-changes true
@@ -64,6 +64,7 @@ alias gco='git checkout'
 alias gb='git branch'
 alias gst='git status'
 alias grb='git rebase'
+alias gpra='git pull --rebase --autostash'
 alias gpr='git pull --rebase'
 alias gf='git fetch'
 alias glog='git log --oneline --decorate --graph'
