@@ -19,7 +19,7 @@ zstyle ':vcs_info:git*' stagedstr '🧩'
 # but can be slow on large repos
 zstyle ':vcs_info:*:*' check-for-changes true
 
-export PROMPT='%F{13}%~%f${vcs_info_msg_0_} $ '
+export PROMPT='%n@%m %1~${vcs_info_msg_0_} %# '
 
 export CLICOLOR=1
 export LSCOLORS='GxFxCxDxBxegedabagaced'
@@ -62,7 +62,7 @@ alias gd='git diff'
 alias gds='git diff --staged'
 alias gr='git restore'
 alias grs='git restore --staged'
-alias gco='git checkout'
+alias gcob='git checkout -b'
 alias gb='git branch'
 alias gst='git status'
 alias grb='git rebase'
@@ -72,8 +72,24 @@ alias gf='git fetch'
 alias glog='git log --oneline --decorate --graph'
 alias gc='git commit'
 alias gcskip='git commit --no-verify'
-gcoff() {
-  git checkout `git branch | fzf`
+alias gcm='git checkout main'
+
+gco() {
+  local branch
+  branch=$(git branch -a | fzf | sed "s/.* //")
+
+  if [[ "$branch" = "" ]]; then
+    echo "No branch selected."
+    return
+  fi
+
+  echo $branch
+
+  if [[ "$branch" = 'remotes/'* ]]; then
+    git checkout --track $branch
+  else
+    git checkout $branch;
+  fi
 }
 
 #k8s
