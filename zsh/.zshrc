@@ -50,7 +50,7 @@ nvff() {
 }
 
 viff() {
-	vim `fzf`
+  vim `fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}'`
 }
 
 #mongo
@@ -58,22 +58,25 @@ viff() {
 
 #git
 alias ga='git add'
-alias gd='git diff'
-alias gds='git diff --staged'
+alias gd='git diff --color | less -R'
+alias gds='git diff --staged --color | less -R'
 alias gr='git restore'
 alias grs='git restore --staged'
 alias gcob='git checkout -b'
 alias gb='git branch'
 alias gst='git status'
 alias grb='git rebase'
+alias grba='git rebase --abort'
+alias grbc='git rebase --continue'
 alias gpra='git pull --rebase --autostash'
 alias gpr='git pull --rebase'
 alias gf='git fetch'
-alias glog='git log --oneline --decorate --graph'
+alias glog='git log --oneline --decorate --graph --color | less -R'
 alias gc='git commit'
 alias gcskip='git commit --no-verify'
 alias gcm='git checkout main'
-
+alias gp='git push'
+alias gpf!='git push --force'
 gco() {
   local branch
   branch=$(git branch -a | fzf | sed "s/.* //")
@@ -90,6 +93,26 @@ gco() {
   else
     git checkout $branch;
   fi
+}
+gbd() {
+  local branch
+  branch=$(git branch | fzf | sed "s/.* //")
+
+  if read -q "choice?Press Y/y to delete branch: "; then
+      echo "\n"
+      git branch -d $branch
+  else
+      echo
+      echo "'$choice' not 'Y' or 'y'. Exiting..."
+  fi
+}
+
+grbi() {
+  local branch_data
+  branch_data=$(git log --oneline | fzf --reverse)
+  echo "Interactive rebase on $branch_data"
+  local branch_hash=$(echo $branch_data | awk '{ print $1 }')
+  git rebase --interactive $branch_hash
 }
 
 #k8s
@@ -112,3 +135,9 @@ deti() {
   CONTAINER_ID=$(echo $CONTAINER_DATA | awk '{ print $1 }')
   docker exec -it $CONTAINER_ID sh
 }
+dkc() {
+  CONTAINER_DATA=$(docker container ls | fzf)
+  CONTAINER_ID=$(echo $CONTAINER_DATA | awk '{ print $1 }')
+  docker kill container $CONTAINER_ID
+}
+alias dcu="docker-compose up -d"

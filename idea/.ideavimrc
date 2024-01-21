@@ -5,3 +5,5 @@ nnoremap <c-t> :action ActivateTerminalToolWindow<CR>
 nnoremap <leader>t :action Terminal.OpenInTerminal<CR>
 
 nnoremap <leader>vs :vsplit<CR>
+nnoremap <S-Tab> :tabprev<CR>
+nnoremap <S-q> :tabnext<CR>
