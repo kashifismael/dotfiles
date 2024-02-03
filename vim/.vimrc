@@ -6,7 +6,7 @@ set smartcase
 
 set clipboard=unnamed
 
-colorscheme sorbet
+colorscheme habamax
 syntax on
 set re=0
 
