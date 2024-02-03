@@ -46,20 +46,25 @@ ff() {
 }
 
 nvff() {
-	nv `fzf`
+  nvim `fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}'`
 }
-
-viff() {
-  vim `fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}'`
-}
-
-#mongo
-#alias run-local-mongo="mongod --config /opt/homebrew/etc/mongod.conf"
 
 #git
 alias ga='git add'
-alias gd='git diff --color | less -R'
-alias gds='git diff --staged --color | less -R'
+gd() {
+  git status -s \
+ | fzf --no-sort --reverse \
+ --preview 'git diff --color=always {+2}' \
+ --bind=ctrl-j:preview-down --bind=ctrl-k:preview-up \
+ --preview-window=right:60%:wrap
+}
+gds() {
+  git status -s \
+ | fzf --no-sort --reverse \
+ --preview 'git diff --staged --color=always {+2}' \
+ --bind=ctrl-j:preview-down --bind=ctrl-k:preview-up \
+ --preview-window=right:60%:wrap
+}
 alias gr='git restore'
 alias grs='git restore --staged'
 alias gcob='git checkout -b'
@@ -116,6 +121,10 @@ grbi() {
   git rebase --interactive $branch_hash
 }
 
+grsff() {
+  git restore --staged `git diff --staged --name-only | fzf`
+}
+
 #k8s
 alias kgp='kubectl get pods'
 alias kgs='kubectl get services'
@@ -132,13 +141,33 @@ alias debug-spring='./gradlew bootRun --debug-jvm | ecslog -i message,error'
 
 # docker
 deti() {
-  CONTAINER_DATA=$(docker container ls | fzf)
-  CONTAINER_ID=$(echo $CONTAINER_DATA | awk '{ print $1 }')
-  docker exec -it $CONTAINER_ID sh
+  local container_data
+  container_data=$(docker container ls | fzf)
+  local container_id
+  container_id=$(echo $container_data | awk '{ print $1 }')
+  docker exec -it $container_id sh
 }
-dkc() {
-  CONTAINER_DATA=$(docker container ls | fzf)
-  CONTAINER_ID=$(echo $CONTAINER_DATA | awk '{ print $1 }')
-  docker kill container $CONTAINER_ID
+dsc() {
+  local container_data
+  container_data=$(docker container ls | fzf)
+  local container_id
+  container_id=$(echo $container_data | awk '{ print $1 }')
+  docker stop container $container_id
 }
 alias dcu="docker-compose up -d"
+alias dcls="docker container ls"
+alias dclsa="docker container ls --all"
+
+# node
+alias nrd="npm run dev"
+alias nvm20="nvm use 20"
+
+# jest
+jeff() {
+ npx jest `rg --files | rg test | fzf`
+}
+
+# vitest
+viff() {
+ npx vitest `rg --files | rg test | fzf`
+}
