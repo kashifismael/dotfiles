@@ -6,12 +6,13 @@ require("nvimkashif.lsp")
 require("nvimkashif.gitsigns")
 require("nvimkashif.fzf")
 require("nvimkashif.autopairs")
-require("nvimkashif.diffview")
 require("nvimkashif.toggleterm")
 
-vim.cmd("colorscheme carbonfox")
+vim.cmd("colorscheme dracula")
 
 vim.wo.relativenumber = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
 
 vim.api.nvim_set_hl(0, 'CursorLineNr', { fg = "white"})
 vim.api.nvim_set_hl(0, 'LineNrAbove', { fg = "#b4cfb8"})
