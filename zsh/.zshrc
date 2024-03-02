@@ -28,6 +28,8 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 
 # general aliases
 alias ..="cd .."
+alias la="ls -a"
+alias make-exec="chmod +x"
 
 # vim
 alias nvconf="cd ~/.config/nvim && nvim init.lua"
@@ -50,42 +52,54 @@ nvff() {
 }
 
 #git
-alias ga='git add'
+alias gaa='git add --all'
+ga() {
+  local git_file=$(git status -s | fzf)
+  local file_path=$(echo $git_file | awk '{print $2}')
+  git add $file_path
+}
 gd() {
   git status -s \
  | fzf --no-sort --reverse \
- --preview 'git diff --color=always {+2}' \
+ --preview 'git diff --color=always {+2} | diff-so-fancy' \
  --bind=ctrl-j:preview-down --bind=ctrl-k:preview-up \
  --preview-window=right:60%:wrap
 }
 gds() {
   git status -s \
  | fzf --no-sort --reverse \
- --preview 'git diff --staged --color=always {+2}' \
+ --preview 'git diff --staged --color=always {+2} | diff-so-fancy' \
  --bind=ctrl-j:preview-down --bind=ctrl-k:preview-up \
  --preview-window=right:60%:wrap
 }
 alias gr='git restore'
+grp() {
+  local git_file=$(git status -s | fzf)
+  local file_path=$(echo $git_file | awk '{print $2}')
+  git restore $file_path -p
+}
 alias grs='git restore --staged'
 alias gcob='git checkout -b'
 alias gb='git branch'
 alias grpo='git remote prune origin'
 alias gst='git status'
 alias grb='git rebase'
+alias grbm='git rebase main'
 alias grba='git rebase --abort'
 alias grbc='git rebase --continue'
 alias gpra='git pull --rebase --autostash'
 alias gpr='git pull --rebase'
 alias gf='git fetch'
-alias glog='git log --oneline --decorate --graph --color | less -R'
+glog() {
+  git log -n 20 --oneline | fzf --reverse --multi --preview 'git show --color=always {+1} | diff-so-fancy'
+}
 alias gc='git commit --no-verify'
 alias gca='git commit --no-verify --all'
 alias gcm='git checkout main'
 alias gp='git push'
 alias gpf!='git push --force'
 gco() {
-  local branch
-  branch=$(git branch -a | fzf | sed "s/.* //")
+  local branch=$(git branch -a | fzf | sed "s/.* //")
 
   if [[ "$branch" = "" ]]; then
     echo "No branch selected."
@@ -101,8 +115,7 @@ gco() {
   fi
 }
 gbd() {
-  local branch
-  branch=$(git branch | fzf | sed "s/.* //")
+  local branch=$(git branch | fzf | sed "s/.* //")
 
   if read -q "choice?Press Y/y to delete branch: "; then
       echo "\n"
@@ -114,11 +127,14 @@ gbd() {
 }
 
 grbi() {
-  local branch_data
-  branch_data=$(git log --oneline | fzf --reverse)
+  local branch_data=$(git log --oneline | fzf --reverse)
   echo "Interactive rebase on $branch_data"
   local branch_hash=$(echo $branch_data | awk '{ print $1 }')
   git rebase --interactive $branch_hash
+}
+
+grff() {
+  git restore `git diff --name-only | fzf`
 }
 
 grsff() {
@@ -126,48 +142,79 @@ grsff() {
 }
 
 #k8s
+alias k='kubectl'
 alias kgp='kubectl get pods'
 alias kgs='kubectl get services'
 alias kgd='kubectl get deployments'
 alias kgj='kubectl get jobs'
 alias kdp='kubectl describe pod'
 alias klf='kubectl logs -f'
-alias kpf="kubectl port-forward"
-alias keti='kubectl exec -t -i'
+klfp() {
+  local pod_id=$(kubectl get pods | fzf | awk '{ print $1 }')
+  kubectl logs -f --since=10m $pod_id
+}
+klf-ecs() {
+  local pod_id=$(kubectl get pods | fzf | awk '{ print $1 }')
+  kubectl logs -f --since=10m $pod_id | ecslog -i message,error
+}
+#alias kpf="kubectl port-forward"
+kpf() {
+  local service_to_pf=$(kubectl get services | fzf | awk '{ print $1 }')
+  kubectl port-forward service/$service_to_pf 8080:80
+}
+keti() {
+  local pod_id=$(kubectl get pods | fzf | awk '{ print $1 }')
+  kubectl exec -t -i $pod_id sh
+}
+kapply() {
+	local manifest_file=$(rg --files | rg 'yml|yaml' | fzf)
+	cat $manifest_file
+	#kubectl apply -f $manifest_file
+}
 
 # gradle/spring boot
+alias gradle-build='./gradlew clean build'
 alias run-spring='./gradlew bootRun | ecslog -i message,error'
 alias debug-spring='./gradlew bootRun --debug-jvm | ecslog -i message,error'
 
 # docker
 deti() {
-  local container_data
-  container_data=$(docker container ls | fzf)
-  local container_id
-  container_id=$(echo $container_data | awk '{ print $1 }')
+  local container_data=$(docker container ls | fzf)
+  local container_id=$(echo $container_data | awk '{ print $1 }')
   docker exec -it $container_id sh
 }
 dsc() {
-  local container_data
-  container_data=$(docker container ls | fzf)
-  local container_id
-  container_id=$(echo $container_data | awk '{ print $1 }')
+  local container_data=$(docker container ls | fzf)
+  local container_id=$(echo $container_data | awk '{ print $1 }')
   docker stop container $container_id
 }
+drmc() {
+  local container_data=$(docker container ls --all | fzf)
+  container_id=$(echo $container_data | awk '{ print $1 }')
+  docker container rm $container_id
+}
 alias dcu="docker-compose up -d"
-alias dcls="docker container ls"
-alias dclsa="docker container ls --all"
+alias dcls="docker container ls --all"
 
 # node
 alias nrd="npm run dev"
 alias nvm20="nvm use 20"
+alias nuke-npm="rm -rf node_modules"
+
+#ts
+alias tscheck="npx tsc --project tsconfig.json"
 
 # jest
 jeff() {
- npx jest `rg --files | rg test | fzf`
+ npx jest `fd test | fzf`
 }
 
 # vitest
-viff() {
- npx vitest `rg --files | rg test | fzf`
+vtff() {
+ npx vitest `fd test | fzf`
 }
+alias vt="npx vitest"
+
+#bat
+alias yaml_pp="bat -lyaml"
+alias json_pp="bat -ljson"

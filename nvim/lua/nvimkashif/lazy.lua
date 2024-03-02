@@ -13,8 +13,8 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
 	"EdenEast/nightfox.nvim",
+	"Mofiqul/dracula.nvim",
 	"lewis6991/gitsigns.nvim",
-	"sindrets/diffview.nvim",
 	"nvim-lualine/lualine.nvim",
 	'windwp/nvim-autopairs',
 	"ibhagwan/fzf-lua",
