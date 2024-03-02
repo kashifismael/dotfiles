@@ -91,7 +91,7 @@ alias gpra='git pull --rebase --autostash'
 alias gpr='git pull --rebase'
 alias gf='git fetch'
 glog() {
-  git log -n 20 --oneline | fzf --reverse --multi --preview 'git show --color=always {+1} | diff-so-fancy'
+  git log -n 20 --oneline | fzf --reverse --multi --preview 'git show --color=always {+1}'
 }
 alias gc='git commit --no-verify'
 alias gca='git commit --no-verify --all'
