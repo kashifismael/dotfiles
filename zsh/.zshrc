@@ -19,7 +19,7 @@ zstyle ':vcs_info:git*' stagedstr '🧩'
 # but can be slow on large repos
 zstyle ':vcs_info:*:*' check-for-changes true
 
-export PROMPT='%n@%m %1~${vcs_info_msg_0_} %# '
+export PROMPT='%F{36}%n@%m%f %1~${vcs_info_msg_0_} %# '
 
 export CLICOLOR=1
 export LSCOLORS='GxFxCxDxBxegedabagaced'
@@ -48,7 +48,7 @@ ff() {
 }
 
 nvff() {
-  nvim `fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}'`
+  nvim `fzf --preview 'cat {}'`
 }
 
 #git
@@ -61,14 +61,14 @@ ga() {
 gd() {
   git status -s \
  | fzf --no-sort --reverse \
- --preview 'git diff --color=always {+2} | diff-so-fancy' \
+ --preview 'git diff --color=always {+2}' \
  --bind=ctrl-j:preview-down --bind=ctrl-k:preview-up \
  --preview-window=right:60%:wrap
 }
 gds() {
   git status -s \
  | fzf --no-sort --reverse \
- --preview 'git diff --staged --color=always {+2} | diff-so-fancy' \
+ --preview 'git diff --staged --color=always {+2}' \
  --bind=ctrl-j:preview-down --bind=ctrl-k:preview-up \
  --preview-window=right:60%:wrap
 }
