@@ -19,7 +19,12 @@ sudo apt install kubectl
 sudo apt install neovim
 sudo apt install fzf
 sudo apt install ripgrep
-sudo apt install fd
+sudo apt install fd-find #fd already taken on ubuntu
 sudo apt install bat
 sudo apt install diff-so-fancy
+```
+
+## Setup symlinks
+```bash
+ls -s ~/repos/dotfiles/nvim ~/.config/nvim
 ```
