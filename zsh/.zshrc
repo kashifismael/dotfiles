@@ -30,6 +30,7 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 alias ..="cd .."
 alias la="ls -a"
 alias make-exec="chmod +x"
+alias repos="cd ~/repos"
 
 # vim
 alias nvconf="cd ~/.config/nvim && nvim init.lua"
@@ -37,6 +38,7 @@ alias viconf="vi ~/.vimrc"
 alias nv="nvim"
 
 alias py="python3"
+alias run-server="py -m http.server"
 
 # use ripgrep for fzf
 export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob '!{**/node_modules/*,**/.git/*,**/build/*,**/.gradle/*,**/.idea/*}'"
@@ -91,7 +93,7 @@ alias gpra='git pull --rebase --autostash'
 alias gpr='git pull --rebase'
 alias gf='git fetch'
 glog() {
-  git log -n 20 --oneline | fzf --reverse --multi --preview 'git show --color=always {+1}'
+  git log -n 20 --oneline --decorate | fzf --reverse --multi --preview 'git show --color=always {+1}'
 }
 alias gc='git commit --no-verify'
 alias gca='git commit --no-verify --all'
@@ -147,8 +149,13 @@ alias kgp='kubectl get pods'
 alias kgs='kubectl get services'
 alias kgd='kubectl get deployments'
 alias kgj='kubectl get jobs'
+alias kd='kubectl describe'
 alias kdp='kubectl describe pod'
 alias klf='kubectl logs -f'
+kdpff() {
+  local pod_id=$(kubectl get pods | fzf | awk '{ print $1 }')
+  kubectl describe pod | bat -lyaml
+}
 klfp() {
   local pod_id=$(kubectl get pods | fzf | awk '{ print $1 }')
   kubectl logs -f --since=10m $pod_id
@@ -167,9 +174,8 @@ keti() {
   kubectl exec -t -i $pod_id sh
 }
 kapply() {
-	local manifest_file=$(rg --files | rg 'yml|yaml' | fzf)
-	cat $manifest_file
-	#kubectl apply -f $manifest_file
+	local manifest_file=$(fd 'yml|yaml' | fzf)
+	kubectl apply -f $manifest_file
 }
 
 # gradle/spring boot
