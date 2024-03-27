@@ -6,9 +6,8 @@ require("nvimkashif.lsp")
 require("nvimkashif.gitsigns")
 require("nvimkashif.fzf")
 require("nvimkashif.autopairs")
-require("nvimkashif.toggleterm")
 
-vim.cmd("colorscheme dracula")
+vim.cmd("colorscheme rose-pine-main")
 
 vim.wo.relativenumber = true
 vim.opt.ignorecase = true

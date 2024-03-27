@@ -14,11 +14,11 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	"EdenEast/nightfox.nvim",
 	"Mofiqul/dracula.nvim",
+	{ "rose-pine/neovim", name = "rose-pine" },
 	"lewis6991/gitsigns.nvim",
 	"nvim-lualine/lualine.nvim",
 	'windwp/nvim-autopairs',
 	"ibhagwan/fzf-lua",
-	{'akinsho/toggleterm.nvim', version = "*", config = true},
 	-- Treesitter syntax highlighting
 	{
     'nvim-treesitter/nvim-treesitter',

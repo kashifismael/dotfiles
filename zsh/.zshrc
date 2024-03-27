@@ -19,7 +19,11 @@ zstyle ':vcs_info:git*' stagedstr '🧩'
 # but can be slow on large repos
 zstyle ':vcs_info:*:*' check-for-changes true
 
-export PROMPT='%F{36}%n@%m%f %1~${vcs_info_msg_0_} %# '
+export KUBE_PS1_CTX_COLOR="cyan"
+export KUBE_PS1_SYMBOL_ENABLE=false
+source "/opt/homebrew/opt/kube-ps1/share/kube-ps1.sh"
+
+export PROMPT='%~${vcs_info_msg_0_} $(kube_ps1) $ '
 
 export CLICOLOR=1
 export LSCOLORS='GxFxCxDxBxegedabagaced'
@@ -98,7 +102,7 @@ glog() {
 alias gc='git commit --no-verify'
 alias gca='git commit --no-verify --all'
 alias gcm='git checkout main'
-alias gp='git push'
+alias gp='git push --no-verify'
 alias gpf!='git push --force'
 gco() {
   local branch=$(git branch -a | fzf | sed "s/.* //")
@@ -224,3 +228,6 @@ alias vt="npx vitest"
 #bat
 alias yaml_pp="bat -lyaml"
 alias json_pp="bat -ljson"
+
+#miscellaeous
+alias far="~/repos/find-and-replace/findandreplace"

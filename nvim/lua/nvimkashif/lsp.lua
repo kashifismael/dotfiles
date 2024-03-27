@@ -9,13 +9,11 @@ lsp_zero.on_attach(function(client, bufnr)
 
 	vim.keymap.set("n", "<leader>ca", function() vim.lsp.buf.code_action() end, opts)
 	vim.keymap.set("n", "<leader>r", function()vim.lsp.buf.rename() end, opts)
-	vim.keymap.set("n", "<leader>mt", function()vim.lsp.buf.format() end, opts)
 end)
 
 require('mason').setup({})
 require('mason-lspconfig').setup({
   ensure_installed = {
-		"html",
 		"tsserver",
 		"eslint",
 		"pyright",
