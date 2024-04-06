@@ -53,8 +53,8 @@ ff() {
 	cd ~/IdeaProjects && cd `ls | fzf`
 }
 
-nvff() {
-  nvim `fzf --preview 'cat {}'`
+viff() {
+  vi `fzf --preview 'cat {}'`
 }
 
 #git
@@ -226,8 +226,9 @@ vtff() {
 alias vt="npx vitest"
 
 #bat
-alias yaml_pp="bat -lyaml"
-alias json_pp="bat -ljson"
+alias yaml_bat="bat -lyaml"
+alias json_bat="bat -ljson"
 
 #miscellaeous
 alias far="~/repos/find-and-replace/findandreplace"
+alias dc="~/repos/decurlative/decurlative"

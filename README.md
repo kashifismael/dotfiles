@@ -22,5 +22,5 @@ sudo apt install fd-find #fd already taken on ubuntu
 
 ## Setup symlinks
 ```bash
-ls -s ~/repos/dotfiles/nvim ~/.config/nvim
+ln -s ~/repos/dotfiles/nvim ~/.config/nvim
 ```

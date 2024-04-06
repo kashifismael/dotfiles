@@ -26,3 +26,5 @@ nnoremap <leader>wq :wq<CR>
 nnoremap <S-t> :tabnew<CR>
 nnoremap <S-Tab> :tabprev<CR>
 nnoremap <S-q> :tabnext<CR>
+nnoremap <leader>j :term<CR>
+tnoremap <Esc> <C-\><C-n>
