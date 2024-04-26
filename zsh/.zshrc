@@ -33,13 +33,21 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 # general aliases
 alias ..="cd .."
 alias la="ls -a"
-alias make-exec="chmod +x"
 alias repos="cd ~/repos"
 
 # vim
-alias nvconf="cd ~/.config/nvim && nvim init.lua"
 alias viconf="vi ~/.vimrc"
 alias nv="nvim"
+nvff(){
+  local file=$(fzf --preview 'cat {}')
+
+  if [[ "$file" = "" ]]; then
+    echo "No file selected."
+    return
+  fi
+
+  nvim $file
+}
 
 alias py="python3"
 alias run-server="py -m http.server"
@@ -51,10 +59,6 @@ export KUBECTX_IGNORE_FZF=1
 
 ff() {
 	cd ~/IdeaProjects && cd `ls | fzf`
-}
-
-viff() {
-  vi `fzf --preview 'cat {}'`
 }
 
 #git
@@ -97,7 +101,7 @@ alias gpra='git pull --rebase --autostash'
 alias gpr='git pull --rebase'
 alias gf='git fetch'
 glog() {
-  git log -n 20 --oneline --decorate | fzf --reverse --multi --preview 'git show --color=always {+1}'
+  git log -n 50 --oneline --decorate | fzf --reverse --multi --preview 'git show --color=always {+1}'
 }
 alias gc='git commit --no-verify'
 alias gca='git commit --no-verify --all'
@@ -162,7 +166,7 @@ kdpff() {
 }
 klfp() {
   local pod_id=$(kubectl get pods | fzf | awk '{ print $1 }')
-  kubectl logs -f --since=10m $pod_id
+  kubectl logs -f --since=10m $pod_id | ecslog -i message,error
 }
 klf-ecs() {
   local pod_id=$(kubectl get pods | fzf | awk '{ print $1 }')
