@@ -202,18 +202,27 @@ dsc() {
   local container_id=$(echo $container_data | awk '{ print $1 }')
   docker stop container $container_id
 }
-drmc() {
+dcrm() {
   local container_data=$(docker container ls --all | fzf)
-  container_id=$(echo $container_data | awk '{ print $1 }')
+  local container_id=$(echo $container_data | awk '{ print $1 }')
   docker container rm $container_id
+}
+dirm() {
+  local image_data=$(docker images | fzf)
+  local image_hash=$(echo $image_data | awk '{ print $3 }')
+  docker image rm $image_hash
+}
+dlf() {
+  local container_data=$(docker container ls --all | fzf)
+  local container_id=$(echo $container_data | awk '{ print $1 }')
+  docker logs $container_id -f
 }
 alias dcu="docker-compose up -d"
 alias dcls="docker container ls --all"
+alias dils="docker images"
 
 # node
 alias nrd="npm run dev"
-alias nvm20="nvm use 20"
-alias nuke-npm="rm -rf node_modules"
 
 #ts
 alias tscheck="npx tsc --project tsconfig.json"
