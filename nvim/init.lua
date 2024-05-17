@@ -1,21 +1,13 @@
 require("nvimkashif.remap")
 require("nvimkashif.lazy")
 require("nvimkashif.treesitter")
-require("nvimkashif.lualine")
-require("nvimkashif.lsp")
-require("nvimkashif.gitsigns")
-require("nvimkashif.fzf")
 require("nvimkashif.autopairs")
 
-vim.cmd("colorscheme rose-pine-main")
+vim.cmd("colorscheme gruvbox")
 
 vim.wo.relativenumber = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
-
-vim.api.nvim_set_hl(0, 'CursorLineNr', { fg = "white"})
-vim.api.nvim_set_hl(0, 'LineNrAbove', { fg = "#b4cfb8"})
-vim.api.nvim_set_hl(0, 'LineNrBelow', { fg = "#b4cfb8"})
 
 vim.opt.cursorline = true
 

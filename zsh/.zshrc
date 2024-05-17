@@ -36,7 +36,6 @@ alias la="ls -a"
 alias repos="cd ~/repos"
 
 # vim
-alias viconf="vi ~/.vimrc"
 alias nv="nvim"
 nvff(){
   local file=$(fzf --preview 'cat {}')
@@ -67,6 +66,11 @@ ga() {
   local git_file=$(git status -s | fzf)
   local file_path=$(echo $git_file | awk '{print $2}')
   git add $file_path
+}
+gap() {
+  local git_file=$(git status -s | fzf)
+  local file_path=$(echo $git_file | awk '{print $2}')
+  git add -p $file_path
 }
 gd() {
   git status -s \
@@ -185,9 +189,15 @@ kapply() {
 	local manifest_file=$(fd 'yml|yaml' | fzf)
 	kubectl apply -f $manifest_file
 }
+kc() {
+	local kube_context_data=$(kubectl config get-contexts | fzf)
+	local kube_context=$(echo $kube_context_data | awk '{ print $1 }')
+	kubectl config use-context $kube_context
+}
 
 # gradle/spring boot
-alias gradle-build='./gradlew clean build'
+alias g-b='./gradlew clean build'
+alias g-t='./gradlew test'
 alias run-spring='./gradlew bootRun | ecslog -i message,error'
 alias debug-spring='./gradlew bootRun --debug-jvm | ecslog -i message,error'
 
@@ -243,5 +253,19 @@ alias yaml_bat="bat -lyaml"
 alias json_bat="bat -ljson"
 
 #miscellaeous
-alias far="~/repos/find-and-replace/findandreplace"
-alias dc="~/repos/decurlative/decurlative"
+#find and preview
+fnp() {
+	local result=$(rg $1 --no-heading --with-filename --line-number --hidden | \
+		sed s/:/\\t/g | \
+		fzf --reverse --preview 'bat {+1} --color=always --highlight-line={+2} --line-range $( expr {+2} - 1 ):+10 ')
+
+	local file=$(echo $result | awk '{ print $1 }')
+	local line_number=$(echo $result | awk '{ print $2 }')
+	nvim $file +$line_number
+}
+
+uuid() {
+  local generated_uuid=$(uuidgen | tr 'A-Z' 'a-z')
+  echo $generated_uuid | pbcopy
+  echo "UUID $generated_uuid copied to clipboard"
+}
