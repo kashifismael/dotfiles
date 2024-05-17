@@ -12,24 +12,10 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-	"EdenEast/nightfox.nvim",
-	"Mofiqul/dracula.nvim",
-	{ "rose-pine/neovim", name = "rose-pine" },
-	"lewis6991/gitsigns.nvim",
-	"nvim-lualine/lualine.nvim",
+	"morhetz/gruvbox",
 	'windwp/nvim-autopairs',
-	"ibhagwan/fzf-lua",
-	-- Treesitter syntax highlighting
 	{
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
-  },
-	--- LSP and auto completion
-	{'williamboman/mason.nvim'},
-	{'williamboman/mason-lspconfig.nvim'},
-	{'VonHeikemen/lsp-zero.nvim', branch = 'v3.x'},
-	{'neovim/nvim-lspconfig'},
-	{'hrsh7th/cmp-nvim-lsp'},
-	{'hrsh7th/nvim-cmp'},
-	{'L3MON4D3/LuaSnip'},
+  }
 })
