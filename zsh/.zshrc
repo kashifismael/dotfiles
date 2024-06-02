@@ -111,7 +111,7 @@ alias gc='git commit --no-verify'
 alias gca='git commit --no-verify --all'
 alias gcm='git checkout main'
 alias gp='git push --no-verify'
-alias gpf!='git push --force'
+alias gpf!='git push --force --no-verify'
 gco() {
   local branch=$(git branch -a | fzf | sed "s/.* //")
 
@@ -255,7 +255,8 @@ alias json_bat="bat -ljson"
 #miscellaeous
 #find and preview
 fnp() {
-	local result=$(rg $1 --no-heading --with-filename --line-number --hidden | \
+	local result=$(rg $1 -i --no-heading --with-filename --line-number --hidden	\
+		--glob '!{**/node_modules/*,**/.git/*,**/build/*,**/.gradle/*,**/.idea/*}' | \
 		sed s/:/\\t/g | \
 		fzf --reverse --preview 'bat {+1} --color=always --highlight-line={+2} --line-range $( expr {+2} - 1 ):+10 ')
 
@@ -266,6 +267,6 @@ fnp() {
 
 uuid() {
   local generated_uuid=$(uuidgen | tr 'A-Z' 'a-z')
-  echo $generated_uuid | pbcopy
+  echo $generated_uuid | tr -d '\n' | pbcopy
   echo "UUID $generated_uuid copied to clipboard"
 }
