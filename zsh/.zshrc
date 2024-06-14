@@ -31,6 +31,10 @@ export KUBECTX_IGNORE_FZF=1
 
 ff() {
 	cd ~/IdeaProjects && cd `ls | fzf`
+	if test -f .nvmrc; then
+		nvm use
+	fi
+
 }
 
 #git
