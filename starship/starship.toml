@@ -1,0 +1,13 @@
+[kubernetes]
+disabled = false
+
+[gradle]
+disabled = true
+
+[java]
+disabled = true
+
+[git_status]
+conflicted = '💥'
+staged = '🧩'
+modified = '⚡️'
