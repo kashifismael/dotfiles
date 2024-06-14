@@ -116,21 +116,20 @@ gbd() {
       echo "'$choice' not 'Y' or 'y'. Exiting..."
   fi
 }
-
 grbi() {
   local branch_data=$(git log --oneline | fzf --reverse)
   echo "Interactive rebase on $branch_data"
   local branch_hash=$(echo $branch_data | awk '{ print $1 }')
   git rebase --interactive $branch_hash
 }
-
 grff() {
   git restore `git diff --name-only | fzf`
 }
-
 grsff() {
   git restore --staged `git diff --staged --name-only | fzf`
 }
+alias gstl="git stash list"
+alias gstc="git stash clear"
 
 #k8s
 alias k='kubectl'
