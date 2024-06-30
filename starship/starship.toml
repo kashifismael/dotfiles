@@ -1,13 +1,26 @@
+command_timeout = 1000
+
 [kubernetes]
 disabled = false
+symbol = '⛴️  '
 
 [gradle]
 disabled = true
 
 [java]
+style = 'yellow'
+symbol = '☕️ '
+
+[python]
 disabled = true
 
 [git_status]
 conflicted = '💥'
 staged = '🧩'
 modified = '⚡️'
+stashed = '💰'
+diverged = '🔀'
+deleted = '🗑️ '
+
+[package]
+disabled = true
