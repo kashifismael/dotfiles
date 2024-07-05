@@ -35,6 +35,9 @@ ff() {
 		nvm use
 	fi
 
+	if test -f .sdkmanrc; then
+		sdk env
+	fi
 }
 
 #git
@@ -84,8 +87,12 @@ alias gf='git fetch'
 glog() {
   git log -n 50 --oneline --decorate | fzf --reverse --multi --preview 'git show --color=always {+1}'
 }
-alias gc='git commit --no-verify'
-alias gca='git commit --no-verify --all'
+gc() {
+	gum write --placeholder "Enter commit message" | git commit --no-verify --file -
+}
+gca() {
+	gum write --placeholder "Enter commit message" | git commit --no-verify --all --file -
+}
 alias gcm='git checkout main'
 alias gp='git push --no-verify'
 alias gpf!='git push --force --no-verify'
@@ -139,14 +146,14 @@ alias kgd='kubectl get deployments'
 alias kgj='kubectl get jobs'
 alias kd='kubectl describe'
 alias kdp='kubectl describe pod'
-alias klf='kubectl logs -f'
+#alias klf='kubectl logs -f'
 kdpff() {
   local pod_id=$(kubectl get pods | fzf | awk '{ print $1 }')
   kubectl describe pod | bat -lyaml
 }
-klfp() {
-  local pod_id=$(kubectl get pods | fzf | awk '{ print $1 }')
-  kubectl logs -f --since=10m $pod_id | ecslog -i message,error
+klf() {
+  local pod_selector=$(kubectl get services | fzf | awk '{ print $1 }')
+  stern $pod_selector --since=10m --output=raw | ecslog -i message,error
 }
 klf-ecs() {
   local pod_id=$(kubectl get pods | fzf | awk '{ print $1 }')
@@ -204,6 +211,7 @@ dlf() {
   docker logs $container_id -f
 }
 alias dcu="docker-compose up -d"
+alias dcd="docker-compose down"
 alias dcls="docker container ls --all"
 alias dils="docker images"
 
